@@ -1,0 +1,14 @@
+---
+realmd_package_state: present
+realmd_realm: EXAMPLE.COM
+realmd_username: Administrator
+realmd_password: password
+realmd_homedir: /home/%u
+realmd_use_fully_qualified_names: 'False'
+realmd_sssd_config:
+- section: 'domain/{{ realmd_realm | lower }}'
+  option: use_fully_qualified_names
+  value: '{{ realmd_use_fully_qualified_names }}'
+- section: 'domain/{{ realmd_realm | lower }}'
+  option: override_homedir
+  value: '{{ realmd_homedir }}'

@@ -1,0 +1,10 @@
+---
+realmd_package_names:
+- realmd
+- sssd
+- oddjob
+- oddjob-mkhomedir
+- adcli
+- samba-common
+- samba-common-tools
+realmd_sssd_config_file: /etc/sssd/sssd.conf

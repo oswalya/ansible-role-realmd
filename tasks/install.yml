@@ -1,0 +1,6 @@
+---
+- name: ensure package
+  package:
+    name: '{{ item }}'
+    state: '{{ realmd_package_state | default(omit) }}'
+  with_items: '{{ realmd_package_names }}'

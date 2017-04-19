@@ -1,0 +1,24 @@
+---
+- name: discover realm
+  shell: realm discover --unattended {{ realmd_realm }}
+  changed_when: false
+
+- name: join realm
+  environment:
+    LANG: en_US.UTF-8
+  shell: "echo '{{ realmd_password }}' | realm join --unattended --user={{ realmd_username }}@{{ realmd_realm }} {{ realmd_realm }}"
+  register: realmd_join
+  changed_when: not 'Already joined to this domain' in realmd_join.stderr
+  failed_when: realmd_join.rc != 0 and not 'Already joined to this domain' in realmd_join.stderr
+
+# - debug: var=realmd_join
+#
+- name: configure sssd
+  ini_file:
+    dest: '{{ realmd_sssd_config_file }}'
+    section: '{{ item.section }}'
+    option: '{{ item.option }}'
+    value: '{{ item.value | default(omit) }}'
+    state: '{{ item.state | default(omit) }}'
+  with_items: '{{ realmd_sssd_config }}'
+  notify: restart sssd
